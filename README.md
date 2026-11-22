@@ -1,10 +1,17 @@
 # Sandbox integration template
 
-A 1weavr integration as **one JavaScript file** that 1weavr runs for you, isolated. Pick it when you need logic
-between calls that a manifest cannot express.
+Adds a capture as an entry on a page in your tool, written as one JavaScript file that 1weavr runs for you,
+isolated. Start here when you need logic between calls that a manifest cannot express.
 
-This one adds a capture as an entry on a page in your tool, and looks for an earlier entry first so a retry never adds
-it twice.
+What it does in 1weavr, and which part of the manifest and `index.js` does it:
+
+| Where | What people see | In the code |
+|---|---|---|
+| Set-up | Connect with an API token, checked by asking who it belongs to | `connection` (`token`), `whoAmI` |
+| Send to, in the app and the extension | A form: the page, and a title taken from the capture | `contributes["item.actions"]`, `lookups.pages` → `pages` |
+| Sending | Adds the entry with the capture's note and first picture; on a retry, finds the entry an earlier try made instead of adding a second | `addEntry`, `findEntry` |
+| Sent to | The entry's link on the capture | `contributes["item.sent"]` |
+| Project default | Each 1weavr project can send to one page by default | `contributes["project.destination"]` |
 
 ## What is in it
 
