@@ -6,17 +6,6 @@ between calls that a manifest cannot express.
 This one adds a capture as an entry on a page in your tool, and looks for an earlier entry first so a retry never adds
 it twice.
 
-## Status
-
-This template is ahead of the platform. Read this before you build on it:
-
-- **The sandbox runtime is not available yet.** Today 1weavr runs only its built-in integrations. If you upload this
-  integration now, every call answers "The sandbox runtime is not available on this server yet". Its manifest and test
-  cases are checked, but nothing runs.
-- **There is no command-line tool yet** to run the test cases on your machine. They will run in 1weavr's developer
-  console once the runtime is there.
-- **Uploading packages is not built yet** either. Watch this repository: this README changes as each of these ships.
-
 ## What is in it
 
 ```
