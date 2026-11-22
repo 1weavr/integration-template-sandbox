@@ -1,17 +1,26 @@
 # Sandbox integration template
 
-Adds a capture as an entry on a page in your tool, written as one JavaScript file that 1weavr runs for you,
-isolated. Start here when you need logic between calls that a manifest cannot express.
+Adds a capture as an entry on a page in your tool. The logic is one ES module, `index.js`, with no imports, which
+1weavr runs isolated. Each call below is answered by the export the manifest names.
 
-What it does in 1weavr, and which part of the manifest and `index.js` does it:
+## The calls it answers
 
-| Where | What people see | In the code |
-|---|---|---|
-| Set-up | Connect with an API token, checked by asking who it belongs to | `connection` (`token`), `whoAmI` |
-| Send to, in the app and the extension | A form: the page, and a title taken from the capture | `contributes["item.actions"]`, `lookups.pages` → `pages` |
-| Sending | Adds the entry with the capture's note and first picture; on a retry, finds the entry an earlier try made instead of adding a second | `addEntry`, `findEntry` |
-| Sent to | The entry's link on the capture | `contributes["item.sent"]` |
-| Project default | Each 1weavr project can send to one page by default | `contributes["project.destination"]` |
+| Call | Export in `index.js` | Input | Output | Limit |
+|---|---|---|---|---|
+| `connection.verify` | `whoAmI` | nothing | `{ account }`, shown as "Connected as …" | 10 s, no retry |
+| `lookup` (`pages`) | `pages` | `{ lookup, query, cursor, values }` | `{ items: [{ value, label }], next }` | 5 s, no retry |
+| `send.file` | `addEntry` | `{ target, report, markdown, outcome, values, marker }` | `{ outcome: "entry", target, ref: { scheme: "id", id }, url }` | 120 s, never retried |
+| `send.find` | `findEntry` | `{ target, marker, outcome, since }` | `{ found: true, outcome, target, ref, url }` or `{ found: false }` | 120 s, no retry |
+
+Each export is `(input, host) => output`. `host.fetch(url, { method, headers, json })` is the only I/O: it reaches only
+the `hosts` in `manifest.json` and fills `${secret.api_token}` itself, so the token never enters your code. Throw an
+`Error` with an HTTP `status` to answer an error: 401 becomes `unauthenticated`; 403, 404 and 422 become `refused`;
+429 becomes `rate_limited`; anything else becomes `failed`.
+
+Every call carries `protocol`, `call`, a unique `delivery` id, the `integration`, the `installation` and its
+`input`. The answer repeats `call` and `delivery` and is either `{ ok: true, output, effects? }` or
+`{ ok: false, error: { code, message } }`, where `code` is `refused`, `failed`, `unauthenticated` or `rate_limited` and
+`message` is shown to people as written. An answer that does not match its call's shape is refused and logged.
 
 ## What is in it
 
