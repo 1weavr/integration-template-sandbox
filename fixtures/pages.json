@@ -1,0 +1,47 @@
+{
+  "name": "Page lookup",
+  "call": "lookup",
+  "input": {
+    "lookup": "pages",
+    "query": "",
+    "cursor": null,
+    "values": {}
+  },
+  "secrets": {
+    "api_token": "fixture-token"
+  },
+  "http": [
+    {
+      "match": {
+        "method": "GET",
+        "url": "https://notes.your-tool.example/api/pages"
+      },
+      "respond": {
+        "status": 200,
+        "body": [
+          {
+            "slug": "week-47",
+            "title": "Week 47"
+          },
+          {
+            "slug": "week-46",
+            "title": "Week 46"
+          }
+        ]
+      }
+    }
+  ],
+  "expect": {
+    "items": [
+      {
+        "value": "week-47",
+        "label": "Week 47"
+      },
+      {
+        "value": "week-46",
+        "label": "Week 46"
+      }
+    ],
+    "next": null
+  }
+}

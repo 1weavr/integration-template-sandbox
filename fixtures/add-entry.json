@@ -1,0 +1,81 @@
+{
+  "name": "Entry for CAP-128",
+  "call": "send.file",
+  "input": {
+    "target": {
+      "id": "week-47",
+      "label": "Week 47"
+    },
+    "report": {
+      "items": [
+        {
+          "itemId": "c_128",
+          "kind": "capture",
+          "title": "Sale badge overlaps the price",
+          "note": "On narrow screens the red badge sits on top of the price.",
+          "attachments": [
+            {
+              "role": "crop",
+              "url": "https://files.example/a/c_128/crop.png",
+              "contentType": "image/png",
+              "bytes": 48210
+            }
+          ],
+          "capture": {
+            "tool": "rect",
+            "page": {
+              "url": "https://stride.shop/sale",
+              "title": "Sale"
+            }
+          }
+        }
+      ],
+      "project": {
+        "id": "p_store",
+        "name": "Storefront"
+      },
+      "title": "Sale badge overlaps the price",
+      "description": "On narrow screens the red badge sits on top of the price.",
+      "labels": [
+        {
+          "name": "ui",
+          "color": "coral"
+        }
+      ]
+    },
+    "markdown": "On narrow screens the red badge sits on top of the price.\n\n![crop](https://files.example/a/c_128/crop.png)\n\nPage: https://stride.shop/sale",
+    "outcome": "entry",
+    "change": null,
+    "values": {
+      "title": "Sale badge overlaps the price"
+    },
+    "marker": "f_01"
+  },
+  "secrets": {
+    "api_token": "fixture-token"
+  },
+  "http": [
+    {
+      "match": {
+        "method": "POST",
+        "url": "https://notes.your-tool.example/api/pages/week-47/entries"
+      },
+      "respond": {
+        "status": 201,
+        "body": {
+          "id": "e_88",
+          "url": "https://notes.your-tool.example/week-47#e_88"
+        }
+      }
+    }
+  ],
+  "expect": {
+    "outcome": "entry",
+    "target": "week-47",
+    "ref": {
+      "scheme": "id",
+      "id": "e_88"
+    },
+    "url": "https://notes.your-tool.example/week-47#e_88"
+  }
+}

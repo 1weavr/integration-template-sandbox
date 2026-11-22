@@ -1,0 +1,114 @@
+{
+  "protocol": 2,
+  "id": "your-notes",
+  "name": "Your notes",
+  "version": "0.1.0",
+  "summary": "Adds a capture to a page in your tool, and keeps it in step.",
+  "description": "Adds the capture's title, note and first picture as an entry on the page you choose, and finds an earlier entry so a retry never adds it twice.",
+  "icon": "icon.svg",
+  "categories": [
+    "docs"
+  ],
+  "links": {
+    "support": "mailto:help@your-tool.example"
+  },
+  "runtime": {
+    "kind": "sandbox",
+    "entry": "index.js"
+  },
+  "hosts": [
+    {
+      "host": "notes.your-tool.example",
+      "use": [
+        "fetch",
+        "link"
+      ],
+      "secrets": [
+        "api_token"
+      ],
+      "reason": "Your tool's notes site: listing pages and adding entries."
+    }
+  ],
+  "connection": {
+    "kind": "token",
+    "owner": "workspace",
+    "verify": "whoAmI",
+    "fields": [
+      {
+        "key": "api_token",
+        "label": "Notes API token",
+        "kind": "text",
+        "secret": true,
+        "required": true
+      }
+    ]
+  },
+  "contributes": {
+    "item.actions": {
+      "outcomes": [
+        {
+          "id": "entry",
+          "action": "create",
+          "object": "issue",
+          "ref": {
+            "scheme": "id"
+          },
+          "needs": "target"
+        }
+      ],
+      "targetKind": "board",
+      "targets": "pages",
+      "form": {
+        "fields": [
+          {
+            "key": "title",
+            "label": "Title",
+            "kind": "text",
+            "required": true,
+            "maxLength": 120,
+            "from": "title"
+          }
+        ]
+      },
+      "file": "addEntry",
+      "find": "findEntry"
+    },
+    "extension.send": "item.actions",
+    "item.sent": {},
+    "project.destination": {
+      "targets": "pages"
+    }
+  },
+  "lookups": {
+    "pages": {
+      "export": "pages"
+    }
+  },
+  "actions": {
+    "whoAmI": {
+      "export": "whoAmI"
+    },
+    "addEntry": {
+      "export": "addEntry"
+    },
+    "findEntry": {
+      "export": "findEntry"
+    }
+  },
+  "events": {
+    "out": [],
+    "in": null
+  },
+  "schedule": [],
+  "storage": {
+    "keys": []
+  },
+  "effects": [],
+  "permissions": [
+    "items.send",
+    "projects.read"
+  ],
+  "locales": {
+    "default": "en"
+  }
+}
