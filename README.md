@@ -43,3 +43,7 @@ The full guide, with the manifest, test cases and publishing: https://1weavr.com
 ## Questions
 
 Email support@1weavr.com, or open an issue on this repository.
+
+## Licence
+
+MIT: copy it, change it and ship it as your own. See `LICENSE`.
